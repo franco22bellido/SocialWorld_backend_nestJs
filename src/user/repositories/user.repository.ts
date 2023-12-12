@@ -5,5 +5,8 @@ import { Injectable } from '@nestjs/common'
 @Injectable()
 export class UserRepository extends Repository<UserEntity>{
 
-    con
+    constructor(private _dataSource: DataSource){
+        super(UserEntity, _dataSource.createEntityManager())
+    }
+
 }
