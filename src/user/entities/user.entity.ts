@@ -1,4 +1,5 @@
 import { CommentEntity } from 'src/comments/entities/comment.entity';
+import { FollowersEntity } from 'src/followers/entities/followers.entity';
 import { LikeEntity } from 'src/likes/entities/like.entity';
 import { PostEntity } from 'src/posts/entities/post.entity';
 import {Entity, Column, PrimaryGeneratedColumn, OneToMany} from 'typeorm';
@@ -26,4 +27,11 @@ export class UserEntity {
 
     @OneToMany(()=> CommentEntity, comments => comments.user)
     comments: CommentEntity[];
+
+    @OneToMany(()=> FollowersEntity, followers=> followers.follower)
+    followers: FollowersEntity[]
+
+    @OneToMany(()=> FollowersEntity, idols=> idols.idol)
+    idols: FollowersEntity[]
+
 }

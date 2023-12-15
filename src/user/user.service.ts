@@ -7,6 +7,8 @@ export class UserService {
 
     constructor(private _userRepository: UserRepository){
     }
-
+    async getFollowers(){
+        return await this._userRepository.getFollowers(1);
+    }
 
 }

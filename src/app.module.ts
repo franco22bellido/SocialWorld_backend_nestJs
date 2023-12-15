@@ -12,7 +12,7 @@ import { PostEntity } from './posts/entities/post.entity';
 import { LikeEntity } from './likes/entities/like.entity';
 import { CommentEntity } from './comments/entities/comment.entity';
 import { FollowersModule } from './followers/followers.module';
-import { FollowersService } from './nest/followers/followers.service';
+import { FollowersEntity } from './followers/entities/followers.entity';
 
 @Module({
   imports: [UserModule, TypeOrmModule.forRoot({
@@ -22,10 +22,10 @@ import { FollowersService } from './nest/followers/followers.service';
     username: "root",
     password: "Ironman312345aAA",
     database: "social_world",
-    entities: [UserEntity, PostEntity, LikeEntity, CommentEntity],
+    entities: [UserEntity, PostEntity, LikeEntity, CommentEntity, FollowersEntity],
     synchronize: true,
   }), PostsModule, LikesModule, CommentsModule, AuthModule, FollowersModule],
   controllers: [AppController],
-  providers: [AppService, FollowersService],
+  providers: [AppService],
 })
 export class AppModule {}
