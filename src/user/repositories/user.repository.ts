@@ -8,7 +8,5 @@ export class UserRepository extends Repository<UserEntity>{
     constructor(private _dataSource: DataSource){
         super(UserEntity, _dataSource.createEntityManager())
     }
-    async getFollowers(id: number) {
-        return await this.findOne({where: {id}, relations: {followers: true}});
-    }
+    
 }

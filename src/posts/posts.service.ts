@@ -20,8 +20,25 @@ export class PostsService {
         return await this._postRepository.delete({id: postId, userId})
     }
     async updatePost(){}
-    async findOne(){}
-    async findTheMostPopular(){}
-    async findPostsOfSpecificProfile(userId: number){}
+
+    
+    async findOne(postId: number){
+        return await this._postRepository.findOne({where: {id: postId}});
+    }
+
+    async findTheMostsPopular(){
+
+        return await this._postRepository
+        .createQueryBuilder('post')
+        // .leftJoinAndSelect('post.likes', 'cantidad_likess')
+        .loadRelationCountAndMap('post.likes', 'post.likes')
+        .getMany();
+
+      
+    }
+    
+    async findPostsOfSpecificUser(userId: number){
+        return await this._postRepository.find({where: {userId}});    
+    }
 
 }

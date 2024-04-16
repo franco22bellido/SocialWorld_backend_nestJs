@@ -3,12 +3,5 @@ import { UserRepository } from './repositories/user.repository';
 
 @Injectable()
 export class UserService {
-
-
-    constructor(private _userRepository: UserRepository){
-    }
-    async getFollowers(){
-        return await this._userRepository.getFollowers(1);
-    }
-
+  constructor(private _userRepository: UserRepository) {}
 }
