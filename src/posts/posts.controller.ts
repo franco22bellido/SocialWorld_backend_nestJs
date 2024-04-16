@@ -2,14 +2,13 @@ import {
   Controller,
   Delete,
   Get,
-  Put,
   Post,
   Param,
   ParseIntPipe,
   Body,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
-import { PostEntity } from './entities/post.entity';
+import { CreatePostDto } from './dto/create-post.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -24,7 +23,7 @@ export class PostsController {
     return this._postService.findOne(postId);
   }
   @Post('/')
-  create(@Body() post) {
+  create(@Body() post: CreatePostDto) {
     return this._postService.craetePost(post);
   }
   @Delete('/:id')
