@@ -15,16 +15,30 @@ import { FollowersModule } from './followers/followers.module';
 import { FollowersEntity } from './followers/entities/followers.entity';
 
 @Module({
-  imports: [UserModule, TypeOrmModule.forRoot({
-    type: "mysql",
-    host: "localhost",
-    port : 3306,
-    username: "root",
-    password: "Ironman312345aAA",
-    database: "social_world",
-    entities: [UserEntity, PostEntity, LikeEntity, CommentEntity, FollowersEntity],
-    synchronize: true,
-  }), PostsModule, LikesModule, CommentsModule, AuthModule, FollowersModule],
+  imports: [
+    UserModule,
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: 'Ironman312345aAA',
+      database: 'social_world',
+      entities: [
+        UserEntity,
+        PostEntity,
+        LikeEntity,
+        CommentEntity,
+        FollowersEntity,
+      ],
+      synchronize: true,
+    }),
+    PostsModule,
+    LikesModule,
+    CommentsModule,
+    AuthModule,
+    FollowersModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
