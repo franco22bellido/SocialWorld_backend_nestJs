@@ -21,11 +21,15 @@ export class LikesService {
       return new HttpException('internal server error', 500);
     }
   }
-  //   deleteOne() {}
   async getAll(userId: number) {
     return await this.likesRepository.find({ where: { userId } });
   }
+  //   deleteOne() {}
   //   getOne() {}
+
+  //getCountLikesOfOnePost
+  //proximamente agregar una propiedad true o false a la entidad
+  //para poder dar dislike
   async findTheMostPopularPosts() {
     //limit 10
     return await this.likesRepository
