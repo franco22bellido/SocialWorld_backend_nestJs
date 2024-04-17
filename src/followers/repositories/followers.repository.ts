@@ -8,10 +8,10 @@ export class followersRepository extends Repository<FollowersEntity> {
     super(FollowersEntity, _dataSource.createEntityManager());
   }
 
-  async followOne(userId, userToFollow) {
+  async followOne(userId: number, userToFollow: number) {
     const newFollower = this.create({
-      followerId: userToFollow,
-      idolId: userId,
+      followerId: userId,
+      idolId: userToFollow,
     });
     const followerSaved = await this.save(newFollower);
     return followerSaved;

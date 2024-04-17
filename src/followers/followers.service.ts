@@ -17,7 +17,7 @@ export class FollowersService {
       relations: { idol: true },
     });
   }
-  async followUser(userId, userToFollow) {
+  async followUser(userId: number, userToFollow: number) {
     return await this._followerRepository.followOne(userId, userToFollow);
   }
   async deleteIdol(userId: number, idolId: number) {
