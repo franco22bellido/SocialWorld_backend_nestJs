@@ -53,20 +53,3 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   providers: [AppService],
 })
 export class AppModule {}
-
-// TypeOrmModule.forRoot({
-//   type: 'mysql',
-//   host: 'localhost',
-//   port: 3306,
-//   username: 'root',
-//   password: 'Ironman312345aAA',
-//   database: 'social_world',
-//   entities: [
-//     UserEntity,
-//     PostEntity,
-//     LikeEntity,
-//     CommentEntity,
-//     FollowersEntity,
-//   ],
-//   synchronize: true,
-// })
