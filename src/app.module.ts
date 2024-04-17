@@ -13,25 +13,35 @@ import { LikeEntity } from './likes/entities/like.entity';
 import { CommentEntity } from './comments/entities/comment.entity';
 import { FollowersModule } from './followers/followers.module';
 import { FollowersEntity } from './followers/entities/followers.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     UserModule,
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'Ironman312345aAA',
-      database: 'social_world',
-      entities: [
-        UserEntity,
-        PostEntity,
-        LikeEntity,
-        CommentEntity,
-        FollowersEntity,
-      ],
-      synchronize: true,
+    ConfigModule.forRoot({
+      envFilePath: ['.env'],
+      isGlobal: true,
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (_configService: ConfigService) => {
+        return {
+          type: 'mysql',
+          host: _configService.get<string>('DB_HOST'),
+          port: _configService.get<number>('DB_PORT'),
+          username: _configService.get<string>('DB_USERNAME'),
+          password: _configService.get<string>('DB_PASSWORD'),
+          database: _configService.get<string>('DB_NAME'),
+          entities: [
+            UserEntity,
+            PostEntity,
+            LikeEntity,
+            CommentEntity,
+            FollowersEntity,
+          ],
+          synchronize: true,
+        };
+      },
     }),
     PostsModule,
     LikesModule,
@@ -43,3 +53,20 @@ import { FollowersEntity } from './followers/entities/followers.entity';
   providers: [AppService],
 })
 export class AppModule {}
+
+// TypeOrmModule.forRoot({
+//   type: 'mysql',
+//   host: 'localhost',
+//   port: 3306,
+//   username: 'root',
+//   password: 'Ironman312345aAA',
+//   database: 'social_world',
+//   entities: [
+//     UserEntity,
+//     PostEntity,
+//     LikeEntity,
+//     CommentEntity,
+//     FollowersEntity,
+//   ],
+//   synchronize: true,
+// })
