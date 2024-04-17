@@ -7,10 +7,12 @@ import {
   ParseIntPipe,
   Body,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
+import { RequestUser } from '../common/request.user';
 
 @Controller('posts')
 @UseGuards(AuthGuard)
@@ -18,21 +20,26 @@ export class PostsController {
   constructor(private readonly _postService: PostsService) {}
 
   @Get('/')
-  getAll() {
-    return this._postService.findAll();
+  getAll(@Req() requestUser: RequestUser) {
+    return this._postService.findAll(requestUser.user.id);
   }
   @Get('/:id')
-  getOne(@Param('id', ParseIntPipe) postId: number) {
-    return this._postService.findOne(postId);
+  getOne(
+    @Param('id', ParseIntPipe) postId: number,
+    @Req() requestUser: RequestUser,
+  ) {
+    return this._postService.findOne(postId, requestUser.user.id);
   }
   @Post('/')
-  create(@Body() post: CreatePostDto) {
-    return this._postService.craetePost(post);
+  create(@Body() post: CreatePostDto, @Req() reqUser: RequestUser) {
+    return this._postService.craetePost(post, reqUser.user.id);
   }
   @Delete('/:id')
-  deleteOne(@Param('id', ParseIntPipe) postId: number) {
-    const userId = 1;
-    return this._postService.deletePost(postId, userId);
+  deleteOne(
+    @Param('id', ParseIntPipe) postId: number,
+    @Req() reqUser: RequestUser,
+  ) {
+    return this._postService.deletePost(postId, reqUser.user.id);
   }
   //   @Put('/:id')
   //   updateOne(
