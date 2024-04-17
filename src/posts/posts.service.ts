@@ -9,9 +9,9 @@ export class PostsService {
   async findAll(userId: number) {
     return await this._postRepository.find({ where: { userId } });
   }
-  async findOne(postId: number, userId: number) {
+  async findOne(postId: number) {
     const postFound = await this._postRepository.findOne({
-      where: { id: postId, userId },
+      where: { id: postId },
     });
     if (!postFound) {
       throw new NotFoundException('post not found');

@@ -24,11 +24,8 @@ export class PostsController {
     return this._postService.findAll(requestUser.user.id);
   }
   @Get('/:id')
-  getOne(
-    @Param('id', ParseIntPipe) postId: number,
-    @Req() requestUser: RequestUser,
-  ) {
-    return this._postService.findOne(postId, requestUser.user.id);
+  getOne(@Param('id', ParseIntPipe) postId: number) {
+    return this._postService.findOne(postId);
   }
   @Post('/')
   create(@Body() post: CreatePostDto, @Req() reqUser: RequestUser) {
