@@ -22,14 +22,14 @@ export class CommentEntity {
   @Column()
   userId: number;
 
-  @ManyToOne(() => UserEntity, (user) => user.comments)
+  @ManyToOne(() => UserEntity, (user) => user.comments, { onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'userId',
     referencedColumnName: 'id',
   })
   user: UserEntity;
 
-  @ManyToOne(() => PostEntity, (post) => post.comments)
+  @ManyToOne(() => PostEntity, (post) => post.comments, { onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'postId',
     referencedColumnName: 'id',

@@ -10,14 +10,14 @@ export class LikeEntity {
   @Column({ primary: true })
   postId: number;
 
-  @ManyToOne(() => UserEntity, (user) => user.likes)
+  @ManyToOne(() => UserEntity, (user) => user.likes, { onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'userId',
     referencedColumnName: 'id',
   })
   user: UserEntity;
 
-  @ManyToOne(() => PostEntity, (post) => post.likes)
+  @ManyToOne(() => PostEntity, (post) => post.likes, { onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'postId',
     referencedColumnName: 'id',

@@ -9,9 +9,11 @@ export class FollowersEntity {
   @Column({ primary: true })
   idolId: number;
 
-  @ManyToOne(() => UserEntity, (user) => user.followers)
+  @ManyToOne(() => UserEntity, (user) => user.followers, {
+    onDelete: 'CASCADE',
+  })
   follower: UserEntity;
 
-  @ManyToOne(() => UserEntity, (user) => user.idols)
+  @ManyToOne(() => UserEntity, (user) => user.idols, { onDelete: 'CASCADE' })
   idol: UserEntity;
 }
