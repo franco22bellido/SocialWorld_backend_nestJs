@@ -26,7 +26,6 @@ export class FollowersService {
       idolId,
     });
   }
-
   async deleteFollower(userId: number, followerId: number) {
     return await this._followerRepository.delete({
       idolId: userId,

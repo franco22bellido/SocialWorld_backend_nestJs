@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { FollowersService } from './followers.service';
 import { AuthGuard } from '../auth/auth.guard';
-import { RequestUser } from 'src/common/request.user';
+import { RequestUser } from '../common/request.user';
 
 @Controller('followers')
 @UseGuards(AuthGuard)
