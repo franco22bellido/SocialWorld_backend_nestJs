@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { UserRepository } from './repositories/user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { hash } from 'bcrypt';
@@ -7,6 +11,16 @@ import { hash } from 'bcrypt';
 export class UserService {
   constructor(private _userRepository: UserRepository) {}
 
+  async findOneByUsernameOrSimilar(username) {
+    return this._userRepository.find({ where: { username }, take: 10 });
+  }
+  async findByUsername(username) {
+    const userFound = await this._userRepository.findByUsername(username);
+    if (!userFound) {
+      throw new NotFoundException('username not found');
+    }
+    return userFound;
+  }
   async create(userDto: CreateUserDto) {
     // validate if user exist
     let userFound = await this._userRepository.findByUsername(userDto.username);
