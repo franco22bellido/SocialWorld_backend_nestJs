@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PostRepository } from './repositories/post.repository';
 import { CreatePostDto } from './dto/create-post.dto';
+import { FollowersEntity } from 'src/followers/entities/followers.entity';
 
 @Injectable()
 export class PostsService {
@@ -43,17 +44,27 @@ export class PostsService {
       postDeleted: postFound,
     };
   }
+  async getPostsByIdols(userId: number) {
+    const result = await this._postRepository
+      .createQueryBuilder('post')
+      .leftJoinAndSelect(
+        FollowersEntity,
+        'followers',
+        'post.userId = followers.idolId',
+      )
+      .leftJoinAndSelect('post.user', 'user', 'post.userId = user.id')
+      .where('followers.followerId = :userId', { userId })
+      .select(['post.id', 'post.text', 'user.username'])
+      .getMany();
+    return result;
+  }
   /**   async updatePost() {}**/
 
-  async findTheMostsPopular() {
-    return await this._postRepository
-      .createQueryBuilder('post')
-      // .leftJoinAndSelect('post.likes', 'cantidad_likess')
-      .loadRelationCountAndMap('post.likes', 'post.likes')
-      .getMany();
-  }
-
-  async findPostsOfSpecificUser(userId: number) {
-    return await this._postRepository.find({ where: { userId } });
-  }
+  // async findTheMostsPopular() {
+  //   return await this._postRepository
+  //     .createQueryBuilder('post')
+  //     // .leftJoinAndSelect('post.likes', 'cantidad_likess')
+  //     .loadRelationCountAndMap('post.likes', 'post.likes')
+  //     .getMany();
+  // }
 }

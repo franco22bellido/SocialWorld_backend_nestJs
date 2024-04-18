@@ -38,15 +38,8 @@ export class PostsController {
   ) {
     return this._postService.deletePost(postId, reqUser.user.id);
   }
-  //   @Put('/:id')
-  //   updateOne(
-  //     @Param('id', ParseIntPipe) postId: number,
-  //     @Body() post: PostEntity,
-  //   ) {
-  //     return this._postService.(postId, post);
-  //   }
-  @Get('/most-popular')
-  async mostPopular() {
-    return await this._postService.findTheMostsPopular();
+  @Get('/profile/:id')
+  getPostsOfIdols() {
+    return this._postService.getPostsByIdols(5);
   }
 }
