@@ -2,17 +2,19 @@ import {
   ConflictException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { UserRepository } from './repositories/user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
-import { hash } from 'bcrypt';
+import { hash, compare } from 'bcrypt';
 
 @Injectable()
 export class UserService {
   constructor(private _userRepository: UserRepository) {}
 
   async findOneByUsernameOrSimilar(username) {
-    return this._userRepository.find({ where: { username }, take: 10 });
+    return this._userRepository.findOneByUsernameOrSimilar(username);
+    // return this._userRepository.find({ where: { username }, take: 10 });
   }
   async findByUsername(username) {
     const userFound = await this._userRepository.findByUsername(username);
@@ -38,5 +40,19 @@ export class UserService {
     //save user
     const newUser = this._userRepository.create(userDto);
     return this._userRepository.save(newUser);
+  }
+  async deleteOne(username: string, password: string) {
+    const userFound =
+      await this._userRepository.findByUsernameAndSelectPassword(username);
+    if (!userFound) {
+      throw new NotFoundException('user not found');
+    }
+    const isMatch = await compare(password, userFound.password);
+
+    if (!isMatch) {
+      throw new UnauthorizedException('the password is wrong');
+    }
+    const result = await this._userRepository.delete(userFound.id);
+    return { message: 'user deleted', result };
   }
 }

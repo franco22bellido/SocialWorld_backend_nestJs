@@ -16,7 +16,8 @@ export class AuthService {
   ) {}
 
   async loginUser(user: LoginDto) {
-    const userFound = await this._userRepository.findByUsername(user.username);
+    const userFound =
+      await this._userRepository.findByUsernameAndSelectPassword(user.username);
     if (!userFound) {
       throw new NotFoundException('username is wrong');
     }

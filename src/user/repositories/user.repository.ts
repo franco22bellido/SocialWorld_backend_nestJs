@@ -11,7 +11,22 @@ export class UserRepository extends Repository<UserEntity> {
     const userByUsername = await this.findOne({ where: { username } });
     return userByUsername;
   }
+  async findByUsernameAndSelectPassword(username: string) {
+    const userByUsername = await this.findOne({
+      where: { username },
+      select: { password: true, id: true, username: true },
+    });
+    return userByUsername;
+  }
   async findByEmail(email: string) {
     return await this.findOne({ where: { email } });
+  }
+  async findOneByUsernameOrSimilar(partialUsername: string) {
+    return this.createQueryBuilder('user')
+      .where('user.username like :partialUsername', {
+        partialUsername: `%${partialUsername}%`,
+      })
+      .take(10)
+      .getMany();
   }
 }
