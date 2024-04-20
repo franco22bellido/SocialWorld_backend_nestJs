@@ -21,10 +21,6 @@ export class FollowersController {
   async getFollowers(@Req() reqUser: RequestUser) {
     return this._followersService.getFollowers(reqUser.user.id);
   }
-  @Get('/idols')
-  async getIdols(@Req() reqUser: RequestUser) {
-    return await this._followersService.getIdols(reqUser.user.id);
-  }
   @Post('/:usertofollow')
   async followOne(
     @Req() reqUser: RequestUser,
@@ -34,13 +30,6 @@ export class FollowersController {
       reqUser.user.id,
       userToFollow,
     );
-  }
-  @Delete('/idols/:idolId')
-  deleteIdol(
-    @Param('idolId', ParseIntPipe) idolId: number,
-    @Req() reqUser: RequestUser,
-  ) {
-    return this._followersService.deleteIdol(reqUser.user.id, idolId);
   }
 
   @Delete('/:followerId')

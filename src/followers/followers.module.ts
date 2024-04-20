@@ -6,6 +6,7 @@ import { FollowersEntity } from './entities/followers.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { followersRepository } from './repositories/followers.repository';
 import { AuthModule } from 'src/auth/auth.module';
+import { FollowingController } from './following.controller';
 
 @Module({
   imports: [
@@ -17,6 +18,6 @@ import { AuthModule } from 'src/auth/auth.module';
     ]),
   ],
   providers: [FollowersService, followersRepository],
-  controllers: [FollowersController],
+  controllers: [FollowersController, FollowingController],
 })
 export class FollowersModule {}
