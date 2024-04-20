@@ -7,16 +7,20 @@ import {
 import { UserRepository } from './repositories/user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { hash, compare } from 'bcrypt';
+import { ProfileRepository } from 'src/profile/profile.repository';
 
 @Injectable()
 export class UserService {
-  constructor(private _userRepository: UserRepository) {}
+  constructor(
+    private _userRepository: UserRepository,
+    private _profileRepository: ProfileRepository,
+  ) {}
 
-  async findOneByUsernameOrSimilar(username) {
+  async findByUsernameOrSimilar(username: string) {
     return this._userRepository.findOneByUsernameOrSimilar(username);
     // return this._userRepository.find({ where: { username }, take: 10 });
   }
-  async findByUsername(username) {
+  async findByUsername(username: string) {
     const userFound = await this._userRepository.findByUsername(username);
     if (!userFound) {
       throw new NotFoundException('username not found');
@@ -34,12 +38,24 @@ export class UserService {
     if (userFound) {
       throw new ConflictException('email is already exist');
     }
-
     //hash the password
     userDto.password = await hash(userDto.password, 10);
+
     //save user
-    const newUser = this._userRepository.create(userDto);
-    return this._userRepository.save(newUser);
+    const newUser = this._userRepository.create({
+      username: userDto.username,
+      email: userDto.email,
+      password: userDto.password,
+    });
+
+    // create profile
+    const newProfile = this._profileRepository.create({
+      firstname: userDto.firstname,
+      lastname: userDto.lastname,
+    });
+    newUser.profile = newProfile;
+
+    return await this._userRepository.save(newUser);
   }
   async deleteOne(username: string, password: string) {
     const userFound =

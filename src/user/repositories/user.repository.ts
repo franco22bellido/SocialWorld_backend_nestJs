@@ -8,7 +8,10 @@ export class UserRepository extends Repository<UserEntity> {
     super(UserEntity, _dataSource.createEntityManager());
   }
   async findByUsername(username: string) {
-    const userByUsername = await this.findOne({ where: { username } });
+    const userByUsername = await this.findOne({
+      where: { username },
+      relations: { profile: true },
+    });
     return userByUsername;
   }
   async findByUsernameAndSelectPassword(username: string) {

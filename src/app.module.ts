@@ -14,6 +14,8 @@ import { CommentEntity } from './comments/entities/comment.entity';
 import { FollowersModule } from './followers/followers.module';
 import { FollowersEntity } from './followers/entities/followers.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ProfileModule } from './profile/profile.module';
+import { ProfileEntity } from './profile/entities/profile.entity';
 
 @Module({
   imports: [
@@ -38,6 +40,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
             LikeEntity,
             CommentEntity,
             FollowersEntity,
+            ProfileEntity,
           ],
           synchronize: true,
         };
@@ -48,6 +51,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     CommentsModule,
     AuthModule,
     FollowersModule,
+    ProfileModule,
   ],
   controllers: [AppController],
   providers: [AppService],

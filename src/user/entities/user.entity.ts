@@ -2,7 +2,15 @@ import { CommentEntity } from 'src/comments/entities/comment.entity';
 import { FollowersEntity } from 'src/followers/entities/followers.entity';
 import { LikeEntity } from 'src/likes/entities/like.entity';
 import { PostEntity } from 'src/posts/entities/post.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { ProfileEntity } from 'src/profile/entities/profile.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
 
 @Entity({ name: 'user' })
 export class UserEntity {
@@ -32,4 +40,9 @@ export class UserEntity {
 
   @OneToMany(() => FollowersEntity, (idols) => idols.idol)
   idols: FollowersEntity[];
+
+  @OneToOne(() => ProfileEntity, (profile) => profile.user, { cascade: true })
+  @JoinColumn()
+  profile: ProfileEntity;
+  
 }

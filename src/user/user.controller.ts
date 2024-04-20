@@ -20,7 +20,7 @@ export class UserController {
 
   @Get('/')
   async getUsers(@Body() { username }: FindUsersDto) {
-    return this._userService.findOneByUsernameOrSimilar(username);
+    return this._userService.findByUsernameOrSimilar(username);
   }
   @Get('/:username')
   async getUserByUsername(@Param('username') username: string) {

@@ -15,4 +15,12 @@ export class CreateUserDto {
   @Transform(({ value }: TransformFnParams) => value?.trim())
   @IsEmail()
   email: string;
+
+  @IsNotEmpty()
+  @Transform(({ value }: TransformFnParams) => value.trim())
+  firstname: string;
+
+  @IsNotEmpty()
+  @Transform(({ value }: TransformFnParams) => value.trim())
+  lastname: string;
 }
