@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { followersRepository } from './repositories/followers.repository';
 
 @Injectable()
@@ -18,7 +23,19 @@ export class FollowersService {
     });
   }
   async followUser(userId: number, userToFollow: number) {
-    return await this._followerRepository.followOne(userId, userToFollow);
+    try {
+      return await this._followerRepository.followOne(userId, userToFollow);
+    } catch (error: any) {
+      if (error.driverError?.code) {
+        return new NotFoundException(
+          'error to searching, user follow not found',
+        );
+      }
+      return new HttpException(
+        'error to follow user',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
   async deleteIdol(userId: number, idolId: number) {
     return await this._followerRepository.delete({

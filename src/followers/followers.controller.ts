@@ -4,7 +4,6 @@ import {
   Get,
   Param,
   ParseIntPipe,
-  Post,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -20,16 +19,6 @@ export class FollowersController {
   @Get('/')
   async getFollowers(@Req() reqUser: RequestUser) {
     return this._followersService.getFollowers(reqUser.user.id);
-  }
-  @Post('/:usertofollow')
-  async followOne(
-    @Req() reqUser: RequestUser,
-    @Param('usertofollow', ParseIntPipe) userToFollow: number,
-  ) {
-    return await this._followersService.followUser(
-      reqUser.user.id,
-      userToFollow,
-    );
   }
 
   @Delete('/:followerId')

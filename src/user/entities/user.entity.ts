@@ -9,7 +9,6 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   OneToOne,
-  JoinColumn,
 } from 'typeorm';
 
 @Entity({ name: 'user' })
@@ -41,8 +40,6 @@ export class UserEntity {
   @OneToMany(() => FollowersEntity, (idols) => idols.idol)
   idols: FollowersEntity[];
 
-  @OneToOne(() => ProfileEntity, (profile) => profile.user, { cascade: true })
-  @JoinColumn()
+  @OneToOne(() => ProfileEntity, (profile) => profile.user)
   profile: ProfileEntity;
-  
 }

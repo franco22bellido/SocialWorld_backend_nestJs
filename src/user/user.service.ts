@@ -53,9 +53,10 @@ export class UserService {
       firstname: userDto.firstname,
       lastname: userDto.lastname,
     });
-    newUser.profile = newProfile;
+    newProfile.user = newUser;
 
-    return await this._userRepository.save(newUser);
+    // return newProfile;
+    return await this._profileRepository.save(newProfile);
   }
   async deleteOne(username: string, password: string) {
     const userFound =
