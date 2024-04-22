@@ -21,7 +21,7 @@ export class PostsController {
 
   @Get('/')
   getAll(@Req() requestUser: RequestUser) {
-    return this._postService.findAll(requestUser.user.id);
+    return this._postService.getPostsByFollowings(requestUser.user.id);
   }
   @Get('/:id')
   getOne(@Param('id', ParseIntPipe) postId: number) {
@@ -37,9 +37,5 @@ export class PostsController {
     @Req() reqUser: RequestUser,
   ) {
     return this._postService.deletePost(postId, reqUser.user.id);
-  }
-  @Get('/profile/:id')
-  getPostsOfIdols() {
-    return this._postService.getPostsByIdols(5);
   }
 }

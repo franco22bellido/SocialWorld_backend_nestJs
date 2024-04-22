@@ -44,7 +44,7 @@ export class PostsService {
       postDeleted: postFound,
     };
   }
-  async getPostsByIdols(userId: number) {
+  async getPostsByFollowings(userId: number) {
     const result = await this._postRepository
       .createQueryBuilder('post')
       .leftJoinAndSelect(

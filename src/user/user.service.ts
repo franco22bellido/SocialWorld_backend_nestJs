@@ -18,10 +18,10 @@ export class UserService {
 
   async findByUsernameOrSimilar(username: string) {
     return this._userRepository.findOneByUsernameOrSimilar(username);
-    // return this._userRepository.find({ where: { username }, take: 10 });
   }
   async findByUsername(username: string) {
-    const userFound = await this._userRepository.findByUsername(username);
+    const userFound =
+      await this._userRepository.findByUsernameWithProfileAndPosts(username);
     if (!userFound) {
       throw new NotFoundException('username not found');
     }
@@ -41,7 +41,7 @@ export class UserService {
     //hash the password
     userDto.password = await hash(userDto.password, 10);
 
-    //save user
+    //create user
     const newUser = this._userRepository.create({
       username: userDto.username,
       email: userDto.email,
@@ -55,7 +55,7 @@ export class UserService {
     });
     newProfile.user = newUser;
 
-    // return newProfile;
+    // saving newProfile + user
     return await this._profileRepository.save(newProfile);
   }
   async deleteOne(username: string, password: string) {

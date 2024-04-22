@@ -20,6 +20,9 @@ export class FollowersService {
     return await this._followerRepository.find({
       where: { followerId: userId },
       relations: { idol: true },
+      select: {
+        idol: { username: true, email: true },
+      },
     });
   }
   async followUser(userId: number, userToFollow: number) {
