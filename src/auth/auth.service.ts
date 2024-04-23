@@ -33,7 +33,15 @@ export class AuthService {
       id: userFound.id,
       username: userFound.username,
     };
-    const jwt = this._jwtService.sign(payload);
-    return { message: 'successful login', jwt };
+    const token = this._jwtService.sign(payload);
+    return {
+      message: 'successful login',
+      token,
+      user: {
+        username: userFound.username,
+        email: userFound.email,
+        id: userFound.id,
+      },
+    };
   }
 }
