@@ -1,5 +1,6 @@
 import {
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -24,12 +25,19 @@ export class LikesController {
     return this._likesService.create(postId, reqUser.user.id);
   }
   @Get('/')
-  getAll(@Req() reqUser: RequestUser) {
+  getAllLikes(@Req() reqUser: RequestUser) {
     return this._likesService.getAll(reqUser.user.id);
   }
+  @Delete('/:postId')
+  deleteOneLike(
+    @Param('postId', ParseIntPipe) postId: number,
+    @Req() { user }: RequestUser,
+  ) {
+    return this._likesService.deleteOne(postId, user.id);
+  }
 
-  //   @Get('/')
-  //   getMostPopular() {
-  //     return this._likesService.findTheMostPopularPosts();
-  //   }
+  @Get('/:postId')
+  getAllLikesByPostId(@Param('postId', ParseIntPipe) postId: number) {
+    this._likesService.getAllByPost(postId);
+  }
 }

@@ -24,10 +24,15 @@ export class LikesService {
   async getAll(userId: number) {
     return await this.likesRepository.find({ where: { userId } });
   }
-  //   deleteOne() {}
-  //   getOne() {}
+  async getAllByPost(postId: number) {
+    return await this.likesRepository.find({
+      where: { postId },
+    });
+  }
+  async deleteOne(postId: number, userId: number) {
+    return await this.likesRepository.delete({ postId, userId });
+  }
 
-  //getCountLikesOfOnePost
   //proximamente agregar una propiedad true o false a la entidad
   //para poder dar dislike
   async findTheMostPopularPosts() {
