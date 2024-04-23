@@ -7,9 +7,6 @@ import { FollowersEntity } from 'src/followers/entities/followers.entity';
 export class PostsService {
   constructor(private readonly _postRepository: PostRepository) {}
 
-  async findAll(userId: number) {
-    return await this._postRepository.find({ where: { userId } });
-  }
   async findOne(postId: number) {
     const postFound = await this._postRepository.findOne({
       where: { id: postId },

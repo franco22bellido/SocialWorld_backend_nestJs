@@ -21,9 +21,9 @@ export class PostEntity {
   @Column()
   userId: number;
 
-  @Column()
+  @Column({ type: 'int', default: 0, nullable: false })
   commentsCount: number;
-  @Column()
+  @Column({ type: 'int', default: 0, nullable: false })
   likesCount: number;
 
   @ManyToOne(() => UserEntity, (user) => user.posts, { onDelete: 'CASCADE' })
