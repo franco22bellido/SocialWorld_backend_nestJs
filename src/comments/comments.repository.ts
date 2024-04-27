@@ -9,6 +9,6 @@ export class CommentsRepository extends Repository<CommentEntity> {
   }
 
   async findByPostId(postId: number): Promise<CommentEntity[]> {
-    return await this.find({ where: { postId } });
+    return await this.find({ where: { postId }, relations: { user: true } });
   }
 }

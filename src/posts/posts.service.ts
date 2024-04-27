@@ -10,6 +10,7 @@ export class PostsService {
   async findOne(postId: number) {
     const postFound = await this._postRepository.findOne({
       where: { id: postId },
+      relations: { user: true },
     });
     if (!postFound) {
       throw new NotFoundException('post not found');
@@ -42,17 +43,35 @@ export class PostsService {
     };
   }
   async getPostsByFollowings(userId: number) {
-    const result = await this._postRepository
+    const queryOne = this._postRepository
       .createQueryBuilder('post')
-      .leftJoinAndSelect(
-        FollowersEntity,
-        'followers',
-        'post.userId = followers.idolId',
-      )
+      .leftJoin(FollowersEntity, 'followers', 'post.userId = followers.idolId')
       .leftJoinAndSelect('post.user', 'user', 'post.userId = user.id')
       .where('followers.followerId = :userId', { userId })
-      .select(['post.id', 'post.text', 'user.username'])
-      .getMany();
+      .select([
+        'post.id as id',
+        'post.text as text',
+        'post.likesCount as likesCount',
+        'post.commentsCount as comentsCount',
+        'user.username as username',
+      ])
+      .getSql();
+    const queryTwo = this._postRepository
+      .createQueryBuilder('post')
+      .leftJoinAndSelect('post.user', 'user', 'post.userId = user.id')
+      .where('post.userId = :userId', { userId })
+      .select([
+        'post.id as id',
+        'post.text as text',
+        'post.likesCount as likesCount',
+        'post.commentsCount as comentsCount',
+        'user.username as username',
+      ])
+      .getSql();
+    const result = await this._postRepository.query(
+      `${queryOne} UNION ${queryTwo}`,
+      [userId, userId],
+    );
     return result;
   }
   /**   async updatePost() {}**/
