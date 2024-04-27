@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Req,
+  Query,
   UseGuards,
 } from '@nestjs/common/decorators';
 import { UserService } from './user.service';
@@ -18,8 +19,12 @@ import { UserDeleteDto } from './dto/delete-user.dto';
 export class UserController {
   constructor(private readonly _userService: UserService) {}
 
+  // @Get('/')
+  // async getUsers(@Body() { username }: FindUsersDto) {
+  //   return this._userService.findByUsernameOrSimilar(username);
+  // }
   @Get('/')
-  async getUsers(@Body() { username }: FindUsersDto) {
+  async getUsers(@Query() { username }: FindUsersDto) {
     return this._userService.findByUsernameOrSimilar(username);
   }
   @Get('/:username')
