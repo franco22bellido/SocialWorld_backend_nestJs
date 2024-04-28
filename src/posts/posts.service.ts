@@ -52,7 +52,7 @@ export class PostsService {
         'post.id as id',
         'post.text as text',
         'post.likesCount as likesCount',
-        'post.commentsCount as comentsCount',
+        'post.commentsCount as commentsCount',
         'user.username as username',
       ])
       .getSql();
@@ -60,11 +60,12 @@ export class PostsService {
       .createQueryBuilder('post')
       .leftJoinAndSelect('post.user', 'user', 'post.userId = user.id')
       .where('post.userId = :userId', { userId })
+      .orderBy('id', 'DESC')
       .select([
         'post.id as id',
         'post.text as text',
         'post.likesCount as likesCount',
-        'post.commentsCount as comentsCount',
+        'post.commentsCount as commentsCount',
         'user.username as username',
       ])
       .getSql();

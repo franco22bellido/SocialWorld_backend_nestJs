@@ -52,4 +52,13 @@ export class FollowersService {
       followerId,
     });
   }
+  async findOneFollowingById(userId: number, followingId: number) {
+    const relationFound = await this._followerRepository.findOne({
+      where: { followerId: userId, idolId: followingId },
+    });
+    if (!relationFound) {
+      return { message: 'you dont follow this user', state: false };
+    }
+    return { message: 'you are following this user', state: true };
+  }
 }

@@ -21,6 +21,18 @@ export class FollowingController {
   async getFollowings(@Req() { user }: RequestUser) {
     return await this._followersService.getIdols(user.id);
   }
+
+  @Get('/:followingId')
+  async getFollowingById(
+    @Param('followingId', ParseIntPipe) followingId: number,
+    @Req() { user }: RequestUser,
+  ) {
+    return await this._followersService.findOneFollowingById(
+      user.id,
+      followingId,
+    );
+  }
+
   @Post('/:usertofollow')
   async followOne(
     @Req() reqUser: RequestUser,
