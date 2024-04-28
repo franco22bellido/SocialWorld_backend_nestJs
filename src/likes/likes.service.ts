@@ -29,6 +29,21 @@ export class LikesService {
       where: { postId },
     });
   }
+  async getOneByPostId(postId: number, userId: number) {
+    const likeFound = await this.likesRepository.findOne({
+      where: { postId, userId },
+    });
+    if (likeFound) {
+      return {
+        message: 'you liked this post',
+        state: true,
+      };
+    }
+    return {
+      message: 'you dont liked this post',
+      state: false,
+    };
+  }
   async deleteOne(postId: number, userId: number) {
     return await this.likesRepository.delete({ postId, userId });
   }

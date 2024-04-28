@@ -37,7 +37,10 @@ export class LikesController {
   }
 
   @Get('/:postId')
-  getAllLikesByPostId(@Param('postId', ParseIntPipe) postId: number) {
-    this._likesService.getAllByPost(postId);
+  getOneByPostId(
+    @Param('postId', ParseIntPipe) postId: number,
+    @Req() { user }: RequestUser,
+  ) {
+    return this._likesService.getOneByPostId(postId, user.id);
   }
 }
