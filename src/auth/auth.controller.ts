@@ -1,10 +1,19 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/user-login.dto';
 import { AuthGuard } from './auth.guard';
 import { RequestUser } from '../common/request.user';
+import { Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -18,8 +27,11 @@ export class AuthController {
     return this._userService.create(userDto);
   }
   @Post('/login')
-  loginUser(@Body() userLoginDto: LoginDto) {
-    return this._authService.loginUser(userLoginDto);
+  async loginUser(@Body() userLoginDto: LoginDto, @Res() response: Response) {
+    const data = await this._authService.loginUser(userLoginDto);
+    const Bearer = `Bearer ${data.token}`;
+    response.cookie('authorization', Bearer, { secure: true });
+    return response.json(data);
   }
   @UseGuards(AuthGuard)
   @Get('/profile')
