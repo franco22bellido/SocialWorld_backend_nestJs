@@ -1,4 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PostRepository } from './repositories/post.repository';
 import { CreatePostDto } from './dto/create-post.dto';
 import { FollowersEntity } from 'src/followers/entities/followers.entity';
@@ -22,7 +29,12 @@ export class PostsService {
       const newPost = this._postRepository.create({ ...post, userId });
       return await this._postRepository.save(newPost);
     } catch (error) {
-      console.log(error);
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new InternalServerErrorException('internal server error', {
+        cause: error,
+      });
     }
   }
   async deletePost(id: number, userId: number) {

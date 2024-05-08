@@ -8,6 +8,8 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({ name: 'post' })
@@ -15,11 +17,16 @@ export class PostEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column()
+  @Column({ length: 255, type: 'varchar' })
   text: string;
 
   @Column()
   userId: number;
+
+  @CreateDateColumn()
+  craetedAt: Date;
+  @UpdateDateColumn()
+  updateAt: Date;
 
   @Column({ type: 'int', default: 0, nullable: false })
   commentsCount: number;
