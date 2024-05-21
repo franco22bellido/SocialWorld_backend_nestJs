@@ -21,13 +21,8 @@ export class LikesService {
       return new HttpException('internal server error', 500);
     }
   }
-  async getAll(userId: number) {
+  async getAllByUserId(userId: number) {
     return await this.likesRepository.find({ where: { userId } });
-  }
-  async getAllByPost(postId: number) {
-    return await this.likesRepository.find({
-      where: { postId },
-    });
   }
   async getOneByPostId(postId: number, userId: number) {
     const likeFound = await this.likesRepository.findOne({
@@ -47,18 +42,23 @@ export class LikesService {
   async deleteOne(postId: number, userId: number) {
     return await this.likesRepository.delete({ postId, userId });
   }
-
+  //inactive
+  async getAllByPostId(postId: number) {
+    return await this.likesRepository.find({
+      where: { postId },
+    });
+  }
   //proximamente agregar una propiedad true o false a la entidad
   //para poder dar dislike
-  async findTheMostPopularPosts() {
-    //limit 10
-    return await this.likesRepository
-      .createQueryBuilder('likes')
-      .select('COUNT(*) AS cantidadDeLikes')
-      .leftJoinAndSelect('likes.post', 'post')
-      .orderBy('cantidadDeLikes', 'DESC')
-      .take(10)
-      .groupBy('likes.postId')
-      .getRawMany();
-  }
+  // async findTheMostPopularPosts() {
+  //   //limit 10
+  //   return await this.likesRepository
+  //     .createQueryBuilder('likes')
+  //     .select('COUNT(*) AS cantidadDeLikes')
+  //     .leftJoinAndSelect('likes.post', 'post')
+  //     .orderBy('cantidadDeLikes', 'DESC')
+  //     .take(10)
+  //     .groupBy('likes.postId')
+  //     .getRawMany();
+  // }
 }

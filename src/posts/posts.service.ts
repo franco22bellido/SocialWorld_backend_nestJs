@@ -1,18 +1,15 @@
 import {
-  ForbiddenException,
   HttpException,
-  HttpStatus,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { PostRepository } from './repositories/post.repository';
 import { CreatePostDto } from './dto/create-post.dto';
-import { FollowersEntity } from 'src/followers/entities/followers.entity';
+import { PostRepositoryPostgres } from './repositories/post.repository.postgres';
 
 @Injectable()
 export class PostsService {
-  constructor(private readonly _postRepository: PostRepository) {}
+  constructor(private readonly _postRepository: PostRepositoryPostgres) {}
 
   async findOne(postId: number) {
     const postFound = await this._postRepository.findOne({
@@ -55,38 +52,46 @@ export class PostsService {
     };
   }
   async getPostsByFollowings(userId: number) {
-    const queryOne = this._postRepository
-      .createQueryBuilder('post')
-      .leftJoin(FollowersEntity, 'followers', 'post.userId = followers.idolId')
-      .leftJoinAndSelect('post.user', 'user', 'post.userId = user.id')
-      .where('followers.followerId = :userId', { userId })
-      .select([
-        'post.id as id',
-        'post.text as text',
-        'post.likesCount as likesCount',
-        'post.commentsCount as commentsCount',
-        'user.username as username',
-      ])
-      .getSql();
-    const queryTwo = this._postRepository
-      .createQueryBuilder('post')
-      .leftJoinAndSelect('post.user', 'user', 'post.userId = user.id')
-      .where('post.userId = :userId', { userId })
-      .orderBy('id', 'DESC')
-      .select([
-        'post.id as id',
-        'post.text as text',
-        'post.likesCount as likesCount',
-        'post.commentsCount as commentsCount',
-        'user.username as username',
-      ])
-      .getSql();
-    const result = await this._postRepository.query(
-      `${queryOne} UNION ${queryTwo}`,
-      [userId, userId],
-    );
-    return result;
+    return this._postRepository.findAllByFollowings(userId);
   }
+
+  // obtener pero solo 5, despues seguir pero desde el ultimp de la fila;
+  // async getPostsByFollowings(userId: number, previousPostId: number) {
+  //   const queryOne = this._postRepository
+  //     .createQueryBuilder('post')
+  //     .leftJoin(FollowersEntity, 'followers', 'post.userId = followers.idolId')
+  //     .leftJoinAndSelect('post.user', 'user', 'post.userId = user.id')
+  //     .where('followers.followerId = :userId', { userId })
+  //     .andWhere('post.id > :previousPostId', { previousPostId })
+  //     .select([
+  //       'post.id as id',
+  //       'post.text as text',
+  //       'post.likesCount as likesCount',
+  //       'post.commentsCount as commentsCount',
+  //       'user.username as username',
+  //     ])
+  //     .getSql();
+  //   const queryTwo = this._postRepository
+  //     .createQueryBuilder('post')
+  //     .leftJoinAndSelect('post.user', 'user', 'post.userId = user.id')
+  //     .where('post.userId = :userId', { userId })
+  //     .andWhere('post.id > :previousPostId', { previousPostId })
+  //     .orderBy('id', 'ASC')
+  //     .limit(5)
+  //     .select([
+  //       'post.id as id',
+  //       'post.text as text',
+  //       'post.likesCount as likesCount',
+  //       'post.commentsCount as commentsCount',
+  //       'user.username as username',
+  //     ])
+  //     .getSql();
+  //   const result = await this._postRepository.query(
+  //     `${queryOne} UNION ${queryTwo}`,
+  //     [userId, previousPostId, userId, previousPostId],
+  //   );
+  //   return result;
+  // }
   /**   async updatePost() {}**/
 
   // async findTheMostsPopular() {

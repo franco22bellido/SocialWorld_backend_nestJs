@@ -29,7 +29,7 @@ export class FollowersService {
     try {
       return await this._followerRepository.followOne(userId, userToFollow);
     } catch (error: any) {
-      if (error.driverError?.code) {
+      if (error.driverError?.code === 23503) {
         return new NotFoundException(
           'error to searching, user follow not found',
         );

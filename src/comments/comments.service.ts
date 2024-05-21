@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CommentsRepository } from './comments.repository';
 
 @Injectable()
@@ -10,12 +10,14 @@ export class CommentsService {
     return await this._commentsRepository.save({ userId, postId, text });
   }
 
-  async updateComment(commentId: number, newText: string, userId: number) {
-    //validar si existe post
-    return await this._commentsRepository.update(
-      { id: commentId, userId },
-      { text: newText },
-    );
+  async updateComment(id: number, text: string, userId: number) {
+    const commentFound = await this._commentsRepository.findOne({
+      where: { id, userId },
+    });
+    if (!commentFound)
+      throw new NotFoundException('comment not found in your comment list');
+    commentFound.text = text;
+    return await this._commentsRepository.save(commentFound);
   }
 
   async deleteComment(userId: number, commentId: number) {

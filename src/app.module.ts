@@ -28,7 +28,8 @@ import { ProfileEntity } from './profile/entities/profile.entity';
       inject: [ConfigService],
       useFactory: (_configService: ConfigService) => {
         return {
-          type: 'mysql',
+          type: 'postgres',
+          ssl: true,
           host: _configService.get<string>('DB_HOST'),
           port: _configService.get<number>('DB_PORT'),
           username: _configService.get<string>('DB_USERNAME'),

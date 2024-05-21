@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common/decorators';
 import { DataSource, Repository } from 'typeorm';
 import { PostEntity } from '../entities/post.entity';
-import { FollowersEntity } from 'src/followers/entities/followers.entity';
 import { IPostRepository } from './post.repository.interface';
+import { Injectable } from '@nestjs/common';
+import { FollowersEntity } from 'src/followers/entities/followers.entity';
 
 @Injectable()
-export class PostRepository
+export class PostRepositoryPostgres
   extends Repository<PostEntity>
   implements IPostRepository
 {
@@ -17,7 +17,7 @@ export class PostRepository
     const queryOne = this.createQueryBuilder('post')
       .leftJoin(FollowersEntity, 'followers', 'post.userId = followers.idolId')
       .leftJoinAndSelect('post.user', 'user', 'post.userId = user.id')
-      .where('followers.followerId = :userId', { userId })
+      .where('followers.followerId = $1')
       .select([
         'post.id as id',
         'post.text as text',
@@ -28,7 +28,7 @@ export class PostRepository
       .getSql();
     const queryTwo = this.createQueryBuilder('post')
       .leftJoinAndSelect('post.user', 'user', 'post.userId = user.id')
-      .where('post.userId = :userId', { userId })
+      .where('post.userId = $1')
       .orderBy('id', 'ASC')
       .select([
         'post.id as id',
@@ -38,10 +38,8 @@ export class PostRepository
         'user.username as username',
       ])
       .getSql();
-    const result = await this.query(`${queryOne} UNION ${queryTwo}`, [
-      userId,
-      userId,
-    ]);
+
+    const result = await this.query(`${queryOne} UNION ${queryTwo}`, [userId]);
     return result;
   }
 }

@@ -39,3 +39,14 @@ export class PostsController {
     return this._postService.deletePost(postId, reqUser.user.id);
   }
 }
+
+// @Get('/')
+// getAll(
+//   @Req() requestUser: RequestUser,
+//   @Query('previousPostId', ParseIntPipe) previousPostId: number,
+// ) {
+//   return this._postService.getPostsByFollowings(
+//     requestUser.user.id,
+//     previousPostId,
+//   );
+// }

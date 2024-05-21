@@ -26,7 +26,7 @@ export class LikesController {
   }
   @Get('/')
   getAllLikes(@Req() reqUser: RequestUser) {
-    return this._likesService.getAll(reqUser.user.id);
+    return this._likesService.getAllByUserId(reqUser.user.id);
   }
   @Delete('/:postId')
   deleteOneLike(
