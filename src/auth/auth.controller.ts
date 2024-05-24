@@ -35,7 +35,7 @@ export class AuthController {
       sameSite: 'none',
       maxAge: 60 * 60 * 24 * 7,
     });
-    return response.status(200).json({ message: 'login sussefull' });
+    return response.status(200).json({ message: 'login ok', user: data.user });
   }
   @UseGuards(AuthGuard)
   @Get('/profile')
