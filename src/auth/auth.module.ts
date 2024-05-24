@@ -4,17 +4,18 @@ import { AuthController } from './auth.controller';
 import { UserModule } from 'src/user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { KeysEnum } from 'src/common/keys.enum';
 
 @Module({
   imports: [
     forwardRef(() => UserModule),
     JwtModule.registerAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => {
+      useFactory: (_config: ConfigService) => {
         return {
-          secret: config.get<string>('JWT_SECRET'),
+          secret: _config.get<string>(KeysEnum.jwt_secret),
           signOptions: {
-            expiresIn: '25h',
+            expiresIn: '7d',
           },
         };
       },
@@ -25,13 +26,3 @@ import { ConfigService } from '@nestjs/config';
   exports: [JwtModule],
 })
 export class AuthModule {}
-
-// useFactory: (config: ConfigService) => {
-//   return {
-//     secret: config.get<string>('JWT_SECRET'),
-//     signOptions: {
-//       expiresIn: '25h',
-//     },
-//   };
-// },
-// inject: [ConfigService],

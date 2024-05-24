@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/user-login.dto';
 import { UserRepository } from 'src/user/repositories/user.repository';
@@ -19,7 +15,7 @@ export class AuthService {
     const userFound =
       await this._userRepository.findByUsernameAndSelectPassword(user.username);
     if (!userFound) {
-      throw new NotFoundException('username is wrong');
+      throw new UnauthorizedException('username or password wrong');
     }
     const MatchPassword = await bcrypt.compare(
       user.password,

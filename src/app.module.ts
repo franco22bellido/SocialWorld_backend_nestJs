@@ -16,6 +16,7 @@ import { FollowersEntity } from './followers/entities/followers.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ProfileModule } from './profile/profile.module';
 import { ProfileEntity } from './profile/entities/profile.entity';
+import { KeysEnum } from './common/keys.enum';
 
 @Module({
   imports: [
@@ -30,11 +31,11 @@ import { ProfileEntity } from './profile/entities/profile.entity';
         return {
           type: 'postgres',
           ssl: true,
-          host: _configService.get<string>('DB_HOST'),
-          port: _configService.get<number>('DB_PORT'),
-          username: _configService.get<string>('DB_USERNAME'),
-          password: _configService.get<string>('DB_PASSWORD'),
-          database: _configService.get<string>('DB_NAME'),
+          host: _configService.get<string>(KeysEnum.DB_HOST),
+          port: _configService.get<number>(KeysEnum.DB_PORT),
+          username: _configService.get<string>(KeysEnum.DB_USERNAME),
+          password: _configService.get<string>(KeysEnum.DB_PASSWORD),
+          database: _configService.get<string>(KeysEnum.DB_NAME),
           entities: [
             UserEntity,
             PostEntity,

@@ -31,10 +31,11 @@ export class AuthController {
     const data = await this._authService.loginUser(userLoginDto);
     const Bearer = `Bearer ${data.token}`;
     response.cookie('authorization', Bearer, {
-      secure: false,
-      sameSite: 'lax',
+      secure: true,
+      sameSite: 'none',
+      maxAge: 60 * 60 * 24 * 7,
     });
-    return response.json(data);
+    return response.status(200).json({ message: 'login sussefull' });
   }
   @UseGuards(AuthGuard)
   @Get('/profile')

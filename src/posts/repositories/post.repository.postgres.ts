@@ -21,8 +21,8 @@ export class PostRepositoryPostgres
       .select([
         'post.id as id',
         'post.text as text',
-        'post.likesCount as likesCount',
-        'post.commentsCount as commentsCount',
+        `post.likesCount as "likesCount"`,
+        `post.commentsCount as "commentsCount"`,
         'user.username as username',
       ])
       .getSql();
@@ -33,12 +33,11 @@ export class PostRepositoryPostgres
       .select([
         'post.id as id',
         'post.text as text',
-        'post.likesCount as likesCount',
-        'post.commentsCount as commentsCount',
+        `post.likesCount as "likesCount"`,
+        `post.commentsCount as "commentsCount"`,
         'user.username as username',
       ])
       .getSql();
-
     const result = await this.query(`${queryOne} UNION ${queryTwo}`, [userId]);
     return result;
   }
