@@ -33,8 +33,7 @@ export class AuthController {
     response.cookie('authorization', Bearer, {
       secure: true,
       sameSite: 'none',
-      maxAge: 60 * 60 * 24 * 7,
-      httpOnly: false,
+      maxAge: 1000 * 60 * 60 * 24 * 7,
     });
     return response.status(200).json({ message: 'login ok', user: data.user });
   }
