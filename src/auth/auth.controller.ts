@@ -30,9 +30,9 @@ export class AuthController {
   async loginUser(@Body() userLoginDto: LoginDto, @Res() response: Response) {
     const data = await this._authService.loginUser(userLoginDto);
     const Bearer = `Bearer ${data.token}`;
-    response.cookie('authorization', Bearer, {
+    response.cookie('token', Bearer, {
         sameSite: "none",
-        secure: false,
+        secure: true,
         httpOnly: false,
         maxAge: 1000 * 60 * 60 * 24 * 7
     });
