@@ -31,9 +31,10 @@ export class AuthController {
     const data = await this._authService.loginUser(userLoginDto);
     const Bearer = `Bearer ${data.token}`;
     response.cookie('authorization', Bearer, {
-      secure: true,
-      sameSite: 'none',
-      maxAge: 1000 * 60 * 60 * 24 * 7,
+        sameSite: "none",
+        secure: true,
+        httpOnly: false,
+        maxAge: 1000 * 60 * 60 * 24 * 7
     });
     return response.status(200).json({ message: 'login ok', user: data.user });
   }
