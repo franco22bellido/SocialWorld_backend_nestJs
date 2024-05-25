@@ -32,7 +32,7 @@ export class AuthController {
     const Bearer = `Bearer ${data.token}`;
     response.cookie('authorization', Bearer, {
         sameSite: "none",
-        secure: true,
+        secure: false,
         httpOnly: false,
         maxAge: 1000 * 60 * 60 * 24 * 7
     });
