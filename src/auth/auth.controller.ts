@@ -27,7 +27,7 @@ export class AuthController {
     return this._userService.create(userDto);
   }
   @Post('/login')
-  async loginUser(@Body() userLoginDto: LoginDto, @Res({ passthrough: false }) response: Response) {
+  async loginUser(@Body() userLoginDto: LoginDto, @Res({ passthrough: true}) response: Response) {
     const data = await this._authService.loginUser(userLoginDto);
     const Bearer = `Bearer ${data.token}`;
     response.cookie('token', Bearer, {
