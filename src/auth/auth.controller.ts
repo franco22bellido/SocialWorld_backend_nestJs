@@ -54,7 +54,15 @@ export class AuthController {
 
   @Delete('/logout')
   logout(@Res() response: Response) {
-    response.clearCookie(this._configService.get<string>(KeysEnum.COOKIE_NAME));
+    response.clearCookie(
+      this._configService.get<string>(KeysEnum.COOKIE_NAME),
+      {
+        sameSite: 'none',
+        secure: true,
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+      },
+    );
     return response.status(204);
   }
 }
