@@ -52,17 +52,10 @@ export class AuthController {
     return { message: 'it is your profile!', user: requestUser.user };
   }
 
+  @UseGuards(AuthGuard)
   @Delete('/logout')
   logout(@Res() response: Response) {
-    response.clearCookie(
-      this._configService.get<string>(KeysEnum.COOKIE_NAME),
-      {
-        sameSite: 'none',
-        secure: true,
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 * 7,
-      },
-    );
-    return response.status(204);
+    response.clearCookie(this._configService.get<string>(KeysEnum.COOKIE_NAME));
+    return response.sendStatus(200);
   }
 }
