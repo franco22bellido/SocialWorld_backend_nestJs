@@ -27,7 +27,7 @@ export class AuthController {
     return this._userService.create(userDto);
   }
   @Post('/login')
-  async loginUser(@Body() userLoginDto: LoginDto, @Res({ passthrough: true}) response: Response) {
+  async loginUser(@Body() userLoginDto: LoginDto, @Res() response: Response) {
     const data = await this._authService.loginUser(userLoginDto);
     const Bearer = `Bearer ${data.token}`;
     response.cookie('token', Bearer, {
@@ -36,7 +36,7 @@ export class AuthController {
         httpOnly: false,
         maxAge: 1000 * 60 * 60 * 24 * 7
     });
-    return response.status(200).json({ message: 'login ok', user: data.user });
+    return response.status(201).json({ message: 'login ok', user: data.user });
   }
   @UseGuards(AuthGuard)
   @Get('/profile')
