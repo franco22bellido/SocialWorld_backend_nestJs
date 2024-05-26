@@ -51,8 +51,6 @@ export class AuthController {
   getProfile(@Req() requestUser: RequestUser) {
     return { message: 'it is your profile!', user: requestUser.user };
   }
-
-  @UseGuards(AuthGuard)
   @Delete('/logout')
   logout(@Res() response: Response) {
     response.clearCookie(this._configService.get<string>(KeysEnum.COOKIE_NAME));
