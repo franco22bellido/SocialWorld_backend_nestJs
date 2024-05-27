@@ -7,7 +7,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { KeysEnum } from 'src/common/keys.enum';
+import { KeysEnum } from '../common/keys.enum';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

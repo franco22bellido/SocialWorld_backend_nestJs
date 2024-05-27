@@ -1,6 +1,6 @@
-import { CommentEntity } from 'src/comments/entities/comment.entity';
-import { LikeEntity } from 'src/likes/entities/like.entity';
-import { UserEntity } from 'src/user/entities/user.entity';
+import { CommentEntity } from '../../comments/entities/comment.entity';
+import { LikeEntity } from '../../likes/entities/like.entity';
+import { UserEntity } from '../../user/entities/user.entity';
 import {
   Column,
   Entity,

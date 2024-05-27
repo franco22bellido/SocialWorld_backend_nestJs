@@ -9,8 +9,8 @@ import {
   UseGuards,
 } from '@nestjs/common/decorators';
 import { UserService } from './user.service';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { RequestUser } from 'src/common/request.user';
+import { AuthGuard } from '../auth/auth.guard';
+import { RequestUser } from '../common/request.user';
 import { FindUsersDto } from './dto/find-users.dto';
 import { UserDeleteDto } from './dto/delete-user.dto';
 

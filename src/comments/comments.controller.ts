@@ -11,9 +11,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CommentsService } from './comments.service';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 import { CreateCommentDto } from './dto/comment.dto';
-import { RequestUser } from 'src/common/request.user';
+import { RequestUser } from '../common/request.user';
 
 @Controller('comments')
 @UseGuards(AuthGuard)

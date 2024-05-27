@@ -9,8 +9,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { LikesService } from './likes.service';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { RequestUser } from 'src/common/request.user';
+import { AuthGuard } from '../auth/auth.guard';
+import { RequestUser } from '../common/request.user';
 
 @Controller('likes')
 @UseGuards(AuthGuard)

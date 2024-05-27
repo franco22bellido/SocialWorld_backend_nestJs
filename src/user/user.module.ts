@@ -4,10 +4,10 @@ import { UserController } from './user.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { UserRepository } from './repositories/user.repository';
-import { PostEntity } from 'src/posts/entities/post.entity';
-import { AuthModule } from 'src/auth/auth.module';
-import { ProfileEntity } from 'src/profile/entities/profile.entity';
-import { ProfileModule } from 'src/profile/profile.module';
+import { PostEntity } from '../posts/entities/post.entity';
+import { AuthModule } from '../auth/auth.module';
+import { ProfileEntity } from '../profile/entities/profile.entity';
+import { ProfileModule } from '../profile/profile.module';
 
 @Module({
   imports: [

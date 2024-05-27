@@ -7,7 +7,7 @@ import {
 import { UserRepository } from './repositories/user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { hash, compare } from 'bcrypt';
-import { ProfileRepository } from 'src/profile/profile.repository';
+import { ProfileRepository } from '../profile/profile.repository';
 
 @Injectable()
 export class UserService {

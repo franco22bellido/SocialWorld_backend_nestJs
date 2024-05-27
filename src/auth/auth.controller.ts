@@ -8,15 +8,15 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
-import { UserService } from 'src/user/user.service';
+import { CreateUserDto } from '../user/dto/create-user.dto';
+import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/user-login.dto';
 import { AuthGuard } from './auth.guard';
 import { RequestUser } from '../common/request.user';
 import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
-import { KeysEnum } from 'src/common/keys.enum';
+import { KeysEnum } from '../common/keys.enum';
 
 @Controller('auth')
 export class AuthController {

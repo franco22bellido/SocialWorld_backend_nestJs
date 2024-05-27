@@ -1,8 +1,8 @@
-import { CommentEntity } from 'src/comments/entities/comment.entity';
-import { FollowersEntity } from 'src/followers/entities/followers.entity';
-import { LikeEntity } from 'src/likes/entities/like.entity';
-import { PostEntity } from 'src/posts/entities/post.entity';
-import { ProfileEntity } from 'src/profile/entities/profile.entity';
+import { CommentEntity } from '../../comments/entities/comment.entity';
+import { FollowersEntity } from '../../followers/entities/followers.entity';
+import { LikeEntity } from '../../likes/entities/like.entity';
+import { PostEntity } from '../../posts/entities/post.entity';
+import { ProfileEntity } from '../../profile/entities/profile.entity';
 import {
   Entity,
   Column,
