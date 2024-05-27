@@ -4,79 +4,81 @@ not_same_id
 CHECK ("followerId" <> "idolId");
 
 
-
-CREATE OR REPLACE FUNCTION update_followersCount()
+CREATE OR REPLACE FUNCTION increment_followers_count()
    RETURNS TRIGGER
    LANGUAGE PLPGSQL
 AS
 $$
 BEGIN
-	UPDATE profile set followersCount = followersCount + 1
-	WHERE userId = NEW.idolId;
+      UPDATE "public".profile SET "followersCount" = "followersCount" + 1
+      WHERE "userId" = NEW."idolId";
    RETURN NEW;
 END;
 $$;
 
-CREATE TRIGGER increase_followersCount
-  AFTER INSERT ON followers
-  FOR EACH ROW
-	EXECUTE FUNCTION update_followersCount();
+ CREATE TRIGGER increase_followersCount
+   AFTER INSERT ON "public".followers
+   FOR EACH
+   ROW
+	execute function increment_followers_count()
 
--------------------------------------
-CREATE OR REPLACE FUNCTION updateFollowingCount()
+
+CREATE OR REPLACE FUNCTION reduce_followers_count()
    RETURNS TRIGGER
    LANGUAGE PLPGSQL
 AS
 $$
 BEGIN
-        UPDATE PROFILE SET followingCount = followingCount + 1
-      	WHERE userId = NEW.followerId;
+      UPDATE "public".profile SET "followersCount" = "followersCount" - 1
+      WHERE "userId" = old."idolId";
    RETURN NEW;
 END;
 $$;
 
-CREATE TRIGGER increase_followingCount
-  AFTER INSERT ON followers
-  FOR EACH
-  ROW
-	EXECUTE FUNCTION updateFollowingCount()
+ CREATE TRIGGER decrease_followersCount
+   AFTER DELETE ON "public".followers
+   FOR EACH
+   ROW
+	execute function reduce_followers_count()
 
-----------------------------------
-
-
-CREATE OR REPLACE FUNCTION decreaseFollowers()
+	 
+CREATE OR REPLACE FUNCTION increment_following_count()
    RETURNS TRIGGER
    LANGUAGE PLPGSQL
 AS
 $$
 BEGIN
-        UPDATE PROFILE SET followersCount = followersCount - 1
-        where userId = OLD.idolId;
+      UPDATE "public".profile SET "followingCount" = "followingCount" + 1
+      WHERE "userId" = NEW."followerId";
    RETURN NEW;
 END;
 $$;
 
-CREATE TRIGGER decrease_FollowersCount
-  AFTER DELETE ON followers
-    FOR EACH
-    ROW
-       EXECUTE FUNCTION decreaseFollowers()
----------------------------------------
+ CREATE TRIGGER increase_followingCount
+   AFTER insert ON "public".followers
+   FOR EACH
+   ROW
+	execute function increment_following_count()
 
-CREATE OR REPLACE FUNCTION decreaseFollowing()
+
+
+
+	 
+
+CREATE OR REPLACE FUNCTION reduce_following_count()
    RETURNS TRIGGER
    LANGUAGE PLPGSQL
 AS
 $$
 BEGIN
-      UPDATE profile SET followingCount = followingCount - 1
-      WHERE userId = old.followerId;
+      UPDATE "public".profile SET "followingCount" = "followingCount" - 1
+      WHERE "userId" = OLD."followerId";
    RETURN NEW;
 END;
 $$;
 
  CREATE TRIGGER decrease_followingCount
-   AFTER DELETE ON followers
+   AFTER DELETE ON "public".followers
    FOR EACH
    ROW
-	execute function decreaseFollowing()
+	execute function reduce_following_count()
