@@ -13,20 +13,20 @@ export class UserRepository
   }
   async findByUsername(username: string) {
     const userByUsername = await this.findOne({
-      where: { username },
+      where: { username: username.toLowerCase() },
     });
     return userByUsername;
   }
   async findByUsernameWithProfileAndPosts(username: string) {
     const userByUsername = await this.findOne({
-      where: { username },
+      where: { username: username.toLowerCase() },
       relations: { profile: true, posts: true },
     });
     return userByUsername;
   }
   async findByUsernameAndSelectPassword(username: string) {
     const userByUsername = await this.findOne({
-      where: { username },
+      where: { username: username.toLowerCase() },
       select: { password: true, id: true, username: true },
     });
     return userByUsername;
@@ -37,7 +37,7 @@ export class UserRepository
   async findOneByUsernameOrSimilar(partialUsername: string) {
     return this.createQueryBuilder('user')
       .where('user.username like :partialUsername', {
-        partialUsername: `%${partialUsername}%`,
+        partialUsername: `%${partialUsername.toLowerCase()}%`,
       })
       .take(10)
       .getMany();
