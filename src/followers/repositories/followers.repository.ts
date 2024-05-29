@@ -16,4 +16,33 @@ export class followersRepository extends Repository<FollowersEntity> {
     const followerSaved = await this.save(newFollower);
     return followerSaved;
   }
+  async getFollowers(userId: number) {
+    return await this.createQueryBuilder('followers')
+      .leftJoin('followers.idol', 'idol', 'followers.followerId = :userId', {
+        userId,
+      })
+      .where('followers.followerId = :userId', { userId })
+      .select([
+        'followers.idolId as "id"',
+        `idol.username as "username"`,
+        `idol.email as "email"`,
+      ])
+      .getRawMany();
+  }
+  async getFollowing(userId: number) {
+    return await this.createQueryBuilder('followers')
+      .leftJoin(
+        'followers.follower',
+        'follower',
+        'followers.idolId = :userId',
+        { userId },
+      )
+      .where('followers.idolId = :userId', { userId })
+      .select([
+        'followers.followerId as "id"',
+        `follower.username as "username"`,
+        `follower.email as "email"`,
+      ])
+      .getRawMany();
+  }
 }

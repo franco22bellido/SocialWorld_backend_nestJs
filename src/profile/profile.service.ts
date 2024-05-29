@@ -18,14 +18,7 @@ export class ProfileService {
       where: { userId },
     });
 
-    const profileUpdated = {
-      ...profileFound,
-      ...{
-        firstname: partialProfile.firstname,
-        lastname: partialProfile.lastname,
-        info: partialProfile.info,
-      },
-    };
+    const profileUpdated = Object.assign(profileFound, partialProfile);
 
     await this._profileRepository.save(profileUpdated);
 

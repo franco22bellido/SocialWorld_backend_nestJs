@@ -11,19 +11,10 @@ export class FollowersService {
   constructor(private readonly _followerRepository: followersRepository) {}
 
   async getFollowers(userId: number) {
-    return await this._followerRepository.find({
-      where: { idolId: userId },
-      relations: { follower: true },
-    });
+    return await this._followerRepository.getFollowers(userId);
   }
   async getIdols(userId: number) {
-    return await this._followerRepository.find({
-      where: { followerId: userId },
-      relations: { idol: true },
-      select: {
-        idol: { username: true, email: true },
-      },
-    });
+    return await this._followerRepository.getFollowers(userId);
   }
   async followUser(userId: number, userToFollow: number) {
     try {
