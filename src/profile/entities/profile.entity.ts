@@ -16,6 +16,8 @@ export class ProfileEntity {
   firstname: string;
   @Column({ type: 'varchar', length: 100 })
   lastname: string;
+  @Column({ type: 'varchar', length: 150, default: '' })
+  info: string;
   @Column({ type: 'int', default: 0 })
   followersCount: number;
   @Column({ type: 'int', default: 0 })
@@ -23,10 +25,16 @@ export class ProfileEntity {
   @CreateDateColumn()
   createdAt: Date;
 
+  @Column({ nullable: true })
+  userId: number;
+
   @OneToOne(() => UserEntity, (user) => user.profile, {
-    cascade: true,
     onDelete: 'CASCADE',
+    cascade: true,
   })
-  @JoinColumn()
+  @JoinColumn({
+    name: 'userId',
+    referencedColumnName: 'id',
+  })
   user: UserEntity;
 }
