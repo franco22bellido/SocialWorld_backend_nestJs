@@ -10,11 +10,11 @@ import { followersRepository } from './repositories/followers.repository';
 export class FollowersService {
   constructor(private readonly _followerRepository: followersRepository) {}
 
-  async getFollowers(userId: number) {
-    return await this._followerRepository.getFollowers(userId);
+  async getFollowers(username: string) {
+    return await this._followerRepository.getFollowers(username);
   }
-  async getIdols(userId: number) {
-    return await this._followerRepository.getFollowers(userId);
+  async getIdols(username: string) {
+    return await this._followerRepository.getFollowing(username);
   }
   async followUser(userId: number, userToFollow: number) {
     try {

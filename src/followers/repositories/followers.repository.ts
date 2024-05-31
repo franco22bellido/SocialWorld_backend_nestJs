@@ -16,32 +16,35 @@ export class followersRepository extends Repository<FollowersEntity> {
     const followerSaved = await this.save(newFollower);
     return followerSaved;
   }
-  async getFollowers(userId: number) {
+  async getFollowers(username: string) {
     return await this.createQueryBuilder('followers')
-      .leftJoin('followers.idol', 'idol', 'followers.followerId = :userId', {
-        userId,
-      })
-      .where('followers.followerId = :userId', { userId })
+      .leftJoinAndSelect(
+        'followers.follower',
+        'follower',
+        'followers.followerId = follower.id',
+      )
+      .leftJoin('followers.idol', 'idol', 'followers.idolId = idol.id')
+      .where('idol.username = :username', { username })
       .select([
-        'followers.idolId as "id"',
-        `idol.username as "username"`,
-        `idol.email as "email"`,
+        'followers.followerId as "id"',
+        'follower.username as "username"',
+        'follower.email as "email"',
       ])
       .getRawMany();
   }
-  async getFollowing(userId: number) {
+  async getFollowing(username: string) {
     return await this.createQueryBuilder('followers')
+      .leftJoinAndSelect('followers.idol', 'idol', 'followers.idolId = idol.id')
       .leftJoin(
         'followers.follower',
         'follower',
-        'followers.idolId = :userId',
-        { userId },
+        'followers.followerId = follower.id',
       )
-      .where('followers.idolId = :userId', { userId })
+      .where('follower.username = :username', { username })
       .select([
-        'followers.followerId as "id"',
-        `follower.username as "username"`,
-        `follower.email as "email"`,
+        'idol.username as "username"',
+        'idol.email as "email"',
+        'followers.idolId as "id"',
       ])
       .getRawMany();
   }

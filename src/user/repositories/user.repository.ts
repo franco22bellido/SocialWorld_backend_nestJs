@@ -21,6 +21,7 @@ export class UserRepository
     const userByUsername = await this.findOne({
       where: { username: username.toLowerCase() },
       relations: { profile: true, posts: true },
+      order: { posts: { createdAt: 'desc' } },
     });
     return userByUsername;
   }

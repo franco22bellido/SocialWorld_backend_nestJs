@@ -17,12 +17,12 @@ import { RequestUser } from '../common/request.user';
 export class FollowingController {
   constructor(private readonly _followersService: FollowersService) {}
 
-  @Get('/')
-  async getFollowings(@Req() { user }: RequestUser) {
-    return await this._followersService.getIdols(user.id);
+  @Get('/:username')
+  async getFollowings(@Param('username') username: string) {
+    return await this._followersService.getIdols(username);
   }
 
-  @Get('/:followingId')
+  @Get('/isfollowed/:followingId')
   async getFollowingById(
     @Param('followingId', ParseIntPipe) followingId: number,
     @Req() { user }: RequestUser,

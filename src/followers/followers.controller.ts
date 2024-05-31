@@ -16,9 +16,9 @@ import { RequestUser } from '../common/request.user';
 export class FollowersController {
   constructor(private readonly _followersService: FollowersService) {}
 
-  @Get('/')
-  async getFollowers(@Req() reqUser: RequestUser) {
-    return this._followersService.getFollowers(reqUser.user.id);
+  @Get('/:username')
+  async getFollowers(@Param('username') username: string) {
+    return this._followersService.getFollowers(username);
   }
 
   @Delete('/:followerId')

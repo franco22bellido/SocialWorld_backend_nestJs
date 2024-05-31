@@ -24,7 +24,7 @@ export class PostEntity {
   userId: number;
 
   @CreateDateColumn()
-  craetedAt: Date;
+  createdAt: Date;
   @UpdateDateColumn()
   updateAt: Date;
 

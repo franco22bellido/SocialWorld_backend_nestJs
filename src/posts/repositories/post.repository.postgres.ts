@@ -21,6 +21,7 @@ export class PostRepositoryPostgres
       .select([
         'post.id as id',
         'post.text as text',
+        `post.createdAt as "createdAt"`,
         `post.likesCount as "likesCount"`,
         `post.commentsCount as "commentsCount"`,
         'user.username as username',
@@ -29,10 +30,11 @@ export class PostRepositoryPostgres
     const queryTwo = this.createQueryBuilder('post')
       .leftJoinAndSelect('post.user', 'user', 'post.userId = user.id')
       .where('post.userId = $1')
-      .orderBy('id', 'ASC')
+      .orderBy(`"createdAt"`, 'DESC')
       .select([
         'post.id as id',
         'post.text as text',
+        `post.createdAt as "createdAt"`,
         `post.likesCount as "likesCount"`,
         `post.commentsCount as "commentsCount"`,
         'user.username as username',
