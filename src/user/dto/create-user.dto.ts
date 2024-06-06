@@ -2,8 +2,8 @@ import { Transform, TransformFnParams } from 'class-transformer';
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 export class CreateUserDto {
   @IsNotEmpty()
+  @MinLength(1)
   @Transform(({ value }: TransformFnParams) => value.trim())
-  @MinLength(4)
   username: string;
 
   @IsNotEmpty()
