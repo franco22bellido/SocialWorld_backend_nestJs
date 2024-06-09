@@ -23,6 +23,9 @@ export class PostEntity {
   @Column()
   userId: number;
 
+  @Column({ type: 'text', default: null })
+  imgUrl: string;
+
   @CreateDateColumn()
   createdAt: Date;
   @UpdateDateColumn()

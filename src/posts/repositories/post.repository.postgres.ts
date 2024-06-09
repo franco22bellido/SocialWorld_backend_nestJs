@@ -21,6 +21,7 @@ export class PostRepositoryPostgres
       .select([
         'post.id as id',
         'post.text as text',
+        'post.imgUrl as "imgUrl"',
         `post.createdAt as "createdAt"`,
         `post.likesCount as "likesCount"`,
         `post.commentsCount as "commentsCount"`,
@@ -34,6 +35,7 @@ export class PostRepositoryPostgres
       .select([
         'post.id as id',
         'post.text as text',
+        'post.imgUrl as "imgUrl"',
         `post.createdAt as "createdAt"`,
         `post.likesCount as "likesCount"`,
         `post.commentsCount as "commentsCount"`,
