@@ -11,6 +11,15 @@ import { PostRepositoryPostgres } from './repositories/post.repository.postgres'
 export class PostsService {
   constructor(private readonly _postRepository: PostRepositoryPostgres) {}
 
+  async getTrends(userId: number) {
+    try {
+      const posts = await this._postRepository.getTrendsOfToday(userId);
+      return posts;
+    } catch (error) {
+      return new InternalServerErrorException(error);
+    }
+  }
+
   async findOne(postId: number) {
     const postFound = await this._postRepository.findOne({
       where: { id: postId },

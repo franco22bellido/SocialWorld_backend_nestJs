@@ -1,13 +1,13 @@
 import {
   Controller,
   Delete,
-  Get,
   Post,
   Param,
   ParseIntPipe,
   Body,
   UseGuards,
   Req,
+  Get,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -19,6 +19,10 @@ import { RequestUser } from '../common/request.user';
 export class PostsController {
   constructor(private readonly _postService: PostsService) {}
 
+  @Get('/trends')
+  getTopTierPosts(@Req() { user }: RequestUser) {
+    return this._postService.getTrends(user.id);
+  }
   @Get('/')
   getAll(@Req() requestUser: RequestUser) {
     return this._postService.getPostsByFollowings(requestUser.user.id);
@@ -39,14 +43,3 @@ export class PostsController {
     return this._postService.deletePost(postId, reqUser.user.id);
   }
 }
-
-// @Get('/')
-// getAll(
-//   @Req() requestUser: RequestUser,
-//   @Query('previousPostId', ParseIntPipe) previousPostId: number,
-// ) {
-//   return this._postService.getPostsByFollowings(
-//     requestUser.user.id,
-//     previousPostId,
-//   );
-// }

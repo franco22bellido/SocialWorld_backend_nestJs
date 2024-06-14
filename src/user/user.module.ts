@@ -8,6 +8,7 @@ import { PostEntity } from '../posts/entities/post.entity';
 import { AuthModule } from '../auth/auth.module';
 import { ProfileEntity } from '../profile/entities/profile.entity';
 import { ProfileModule } from '../profile/profile.module';
+import { PostRepositoryPostgres } from 'src/posts/repositories/post.repository.postgres';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { ProfileModule } from '../profile/profile.module';
       ProfileEntity,
     ]),
   ],
-  providers: [UserService, UserRepository],
+  providers: [UserService, UserRepository, PostRepositoryPostgres],
   controllers: [UserController],
   exports: [UserService, UserRepository],
 })

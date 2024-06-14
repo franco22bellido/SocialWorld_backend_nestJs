@@ -8,12 +8,14 @@ import { UserRepository } from './repositories/user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { hash, compare } from 'bcrypt';
 import { ProfileRepository } from '../profile/profile.repository';
+import { PostRepositoryPostgres } from 'src/posts/repositories/post.repository.postgres';
 
 @Injectable()
 export class UserService {
   constructor(
     private _userRepository: UserRepository,
     private _profileRepository: ProfileRepository,
+    private _postRepository: PostRepositoryPostgres,
   ) {}
 
   async findByUsernameOrSimilar(username: string) {
@@ -22,9 +24,11 @@ export class UserService {
   async findByUsername(username: string) {
     const userFound =
       await this._userRepository.findByUsernameWithProfileAndPosts(username);
+    userFound.posts = await this._postRepository.getPostsByUserId(userFound.id);
     if (!userFound) {
       throw new NotFoundException('username not found');
     }
+
     return userFound;
   }
   async create(userDto: CreateUserDto) {

@@ -12,6 +12,12 @@ export class PostRepository
   constructor(private readonly _dataSource: DataSource) {
     super(PostEntity, _dataSource.createEntityManager());
   }
+  getPostsByUserId(userId: number) {
+    throw new Error('Method not implemented.');
+  }
+  getTrendsOfToday(userId: number) {
+    throw new Error('Method not implemented.');
+  }
 
   async findAllByFollowings(userId: number) {
     const queryOne = this.createQueryBuilder('post')

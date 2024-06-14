@@ -18,11 +18,10 @@ export class UserRepository
     return userByUsername;
   }
   async findByUsernameWithProfileAndPosts(username: string) {
-    const userByUsername = await this.findOne({
-      where: { username: username.toLowerCase() },
-      relations: { profile: true, posts: true },
-      order: { posts: { createdAt: 'desc' } },
-    });
+    const userByUsername = await this.createQueryBuilder('user')
+      .leftJoinAndSelect('user.profile', 'profile', 'user.id = profile.userId')
+      .where('user.username = :username', { username })
+      .getOne();
     return userByUsername;
   }
   async findByUsernameAndSelectPassword(username: string) {
