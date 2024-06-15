@@ -8,6 +8,7 @@ import {
   UseGuards,
   Req,
   Get,
+  Query,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -24,8 +25,14 @@ export class PostsController {
     return this._postService.getTrends(user.id);
   }
   @Get('/')
-  getAll(@Req() requestUser: RequestUser) {
-    return this._postService.getPostsByFollowings(requestUser.user.id);
+  getAll(
+    @Req() requestUser: RequestUser,
+    @Query('lastpostid') lastPostId: number,
+  ) {
+    return this._postService.getPostsByFollowings(
+      requestUser.user.id,
+      lastPostId,
+    );
   }
   @Get('/:id')
   getOne(@Param('id', ParseIntPipe) postId: number) {

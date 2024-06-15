@@ -64,7 +64,7 @@ export class PostRepositoryPostgres
     return posts;
   }
 
-  async findAllByFollowings(userId: number) {
+  async findAllByFollowings(userId: number, lastPostId: number) {
     const queryOne = this.createQueryBuilder('post')
       .leftJoin(FollowersEntity, 'followers', 'post.userId = followers.idolId')
       .leftJoinAndSelect('post.user', 'user', 'post.userId = user.id')
@@ -72,8 +72,9 @@ export class PostRepositoryPostgres
         userId,
       })
       .where('followers.followerId = $1')
+      .andWhere(lastPostId ? 'post.id < $2' : '1=1')
       .select([
-        `like.userId = ${userId} as "isLiked"`,
+        `like.userId = $1 as "isLiked"`,
         'post.id as id',
         'post.text as text',
         'post.imgUrl as "imgUrl"',
@@ -89,9 +90,10 @@ export class PostRepositoryPostgres
         userId,
       })
       .where('post.userId = $1')
-      .orderBy(`"createdAt"`, 'DESC')
+      .andWhere(lastPostId ? 'post.id < $2' : '1=1')
+      .orderBy(`id`, 'DESC')
       .select([
-        `like.userId = ${userId} as "isLiked"`,
+        `like.userId = $1 as "isLiked"`,
         'post.id as id',
         'post.text as text',
         'post.imgUrl as "imgUrl"',
@@ -100,8 +102,13 @@ export class PostRepositoryPostgres
         `post.commentsCount as "commentsCount"`,
         'user.username as username',
       ])
+      .limit(8)
       .getSql();
-    const result = await this.query(`${queryOne} UNION ${queryTwo}`, [userId]);
+
+    const result = await this.query(
+      `${queryOne} UNION ${queryTwo}`,
+      lastPostId ? [userId, lastPostId] : [userId],
+    );
     return result;
   }
 }

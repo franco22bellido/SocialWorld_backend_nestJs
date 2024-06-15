@@ -19,7 +19,7 @@ export class PostRepository
     throw new Error('Method not implemented.');
   }
 
-  async findAllByFollowings(userId: number) {
+  async findAllByFollowings(userId: number, lastPostId: number) {
     const queryOne = this.createQueryBuilder('post')
       .leftJoin(FollowersEntity, 'followers', 'post.userId = followers.idolId')
       .leftJoinAndSelect('post.user', 'user', 'post.userId = user.id')
